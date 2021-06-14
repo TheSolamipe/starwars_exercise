@@ -1,29 +1,53 @@
 import React from "react";
 import Marquee from "react-fast-marquee";
 import CharacterItem from "./CharacterItem";
-// import {useState, useEffect} from 'react';
+import {useState, useEffect} from 'react';
 import axios from 'axios';
+import { AscendingSort, DescendingSort, FilterHandler } from "../../utils/sortandfilter";
 
 const MovieItem = (movie)=>{
     const movieData = movie?.movie[0]
     console.log(movieData)
 
-    // const [characterList, setCharacterList] = useState([])
+    const [characterList, setCharacterList] = useState([]);
 
-    let characterList = []
-    async function getCharacter(){
+
+useEffect(() => {
+    const getCharacter = async () => {
+        const promiseArray = [];
+
         for(let i =0 ; i< movieData?.characters?.length ; i++){
-            
-             const result = await axios(
-                `${movieData?.characters[i]}`
-              );
-             characterList.push(result?.data);  
+            promiseArray.push(axios(`${movieData?.characters[i]}`))
         }
+
+        const results = await Promise.all(promiseArray);
+       
+        const newResults = results.map(({data}) => data);
+        console.log(newResults);
+        setCharacterList(newResults);
     }
+
+
     getCharacter();
+}, [movieData])
     
-    // setCharacterList(characterArray)
-    console.log(characterList)
+
+    // const characterSetter = ()=>{
+    //     setCharacterList(AscendingSort(characterList, "name"))
+    // }
+    // const handleClick = async ()=>{
+    //     // let age = null
+    //    await characterSetter()
+    // }
+
+    let totalHeight = 0;
+    for(let i=0; i < characterList?.length; i++){
+        totalHeight += parseInt(characterList[i]?.height)
+    }
+    
+    let totalinFeet = totalHeight * 0.0328084
+    const feetValue = Math.trunc(totalinFeet)
+    const inchesValue = ((totalinFeet - feetValue) * 12).toFixed(2)
     
     return(
         <div className="lg:mt-6 mt-3">
@@ -33,7 +57,7 @@ const MovieItem = (movie)=>{
             <table className="w-full">
 						<thead>
 						<tr className="text-left border-2 border-yellow-200">
-							<th className="text-yellow-200 lg:text-xl md:text-md text-xs" scope="col" >Name</th>
+							<th className="text-yellow-200 lg:text-xl md:text-md text-xs" scope="col">Name</th>
 							<th className="text-yellow-200 lg:text-xl md:text-md text-xs" scope="col">Gender &#8597;</th>
 							<th className="text-yellow-200 lg:text-xl md:text-md text-xs" scope="col">Height(cm)</th>
 						</tr>
@@ -48,7 +72,7 @@ const MovieItem = (movie)=>{
 						<tr className="bg-gray-200 text-left">
 							<td className=" font-bold lg:text-xl md:text-sm text-xs">No of characters: {characterList?.length}</td>
                             <td />
-							<td className=" font-bold lg:text-xl md:text-sm text-xs">Total Heights: 500cm()</td>
+							<td className=" font-bold lg:text-xl md:text-sm text-xs">Total Heights: {totalHeight}cm({feetValue}ft/{inchesValue}in)</td>
 						</tr>
 						</tbody>
 					</table>

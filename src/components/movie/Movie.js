@@ -4,7 +4,6 @@ import MovieItem from './MovieItem';
 
 const Movie =(movies) =>{
     const [selectedMovie, setSelectedMovie] = useState("");
-    // const [selectedMovieDetails, setSelectedMovieDetails] = useState({});
 
     const changeHandler = e => {
         const targetEl = e.target;
@@ -23,7 +22,6 @@ const Movie =(movies) =>{
           (movies?.movies[i].title === selectedMovie) && selectedMovieDetails.push(movies?.movies[i])
         }
       }
-      console.log(selectedMovieDetails);
 
     return(
         <div>
