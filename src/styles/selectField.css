@@ -1,0 +1,46 @@
+.form-group1 {
+    position: relative;
+    margin-bottom: 20px;
+  }
+  
+  .form-group1 .form-area {
+    outline: none;
+    border: 0.5px solid black;
+    padding: 16px 13px;
+    font-size: 16px;
+    border-radius: 10px !important;
+    width: 80%;
+    height: 3.5rem;
+    transition: all 0.12s;
+    background-color: yellow;
+  }
+  .form-select {
+    padding: 10px 8px !important;
+    height: 3rem !important;
+  }
+  .form-select2 {
+    padding: 10px 8px !important;
+    height: 2rem !important;
+  }
+  @media only screen and (max-width: 440px) {
+    .form-group1 .form-area {
+      height: 3rem;
+      width: 100%;
+    }
+  }
+  
+  .form-group1 .form-area:focus {
+    border: 0.5px solid #2c912f !important;
+  }
+  
+  .form-group1 .is-invalid {
+    border: 0.5px solid #ff2900 !important;
+  }
+  
+  .form-group1 .invalid-feedback {
+    color: #ff2900 !important;
+  }
+  
+  .auth-color {
+    background: white !important;
+  }
