@@ -10,6 +10,7 @@ const MovieItem = (movie)=>{
     console.log(movieData)
 
     const [characterList, setCharacterList] = useState([]);
+    const [clicked, setClicked] = useState(false);
 
 
 useEffect(() => {
@@ -33,16 +34,25 @@ useEffect(() => {
     
 
     // const characterSetter = ()=>{
-    //     setCharacterList(AscendingSort(characterList, "name"))
+    //     if(clicked === false){setClicked(true)}
+    //     else{ setClicked(false)}
     // }
     // const handleClick = async ()=>{
-    //     // let age = null
     //    await characterSetter()
     // }
 
+    // useEffect(()=>{
+    //     setCharacterList(AscendingSort(characterList, "name"))
+    // },[setClicked, setCharacterList])
+
     let totalHeight = 0;
     for(let i=0; i < characterList?.length; i++){
-        totalHeight += parseInt(characterList[i]?.height)
+        if(!isNaN(characterList[i]?.height)){
+            totalHeight += parseInt(characterList[i]?.height)
+        }
+        else{
+            totalHeight += 0
+        }
     }
     
     let totalinFeet = totalHeight * 0.0328084
@@ -57,7 +67,7 @@ useEffect(() => {
             <table className="w-full">
 						<thead>
 						<tr className="text-left border-2 border-yellow-200">
-							<th className="text-yellow-200 lg:text-xl md:text-md text-xs" scope="col">Name</th>
+							<th className="text-yellow-200 lg:text-xl md:text-md text-xs" scope="col" >Name</th>
 							<th className="text-yellow-200 lg:text-xl md:text-md text-xs" scope="col">Gender &#8597;</th>
 							<th className="text-yellow-200 lg:text-xl md:text-md text-xs" scope="col">Height(cm)</th>
 						</tr>
