@@ -18,7 +18,9 @@ useEffect(() => {
         const promiseArray = [];
 
         for(let i =0 ; i< movieData?.characters?.length ; i++){
-            promiseArray.push(axios(`${movieData?.characters[i]}`))
+           let characterLink = movieData?.characters[i]
+           characterLink = characterLink.substring(0,4) + "s" + characterLink.substring(4, characterLink.length);
+            promiseArray.push(axios(`${characterLink}`))
         }
 
         const results = await Promise.all(promiseArray);

@@ -15,7 +15,7 @@ const Movie =(movies) =>{
               movieNames.push(movies?.movies[i].title)
           }
       }
-
+      console.log(movieNames)
       const selectedMovieDetails = [];
       if(selectedMovie !== ""){
         for(let i=0 ; i < movies?.movies.length ; i++){
