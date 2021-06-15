@@ -7,9 +7,10 @@ import { AscendingSort, DescendingSort, FilterHandler } from "../../utils/sortan
 
 const MovieItem = (movie)=>{
     const movieData = movie?.movie[0]
-    console.log(movieData)
+    
 
     const [characterList, setCharacterList] = useState([]);
+    const [factor, setFactor] = useState('');
     const [clicked, setClicked] = useState(false);
     const [gender, setGender] = useState('');
 
@@ -27,30 +28,25 @@ useEffect(() => {
         const results = await Promise.all(promiseArray);
        
         const newResults = results.map(({data}) => data);
-        console.log(newResults);
-        // const filteredArray =[]
-        const filteredArray = FilterHandler(newResults, gender)
-        if(gender){ setCharacterList(filteredArray)}
+        const filteredArray = FilterHandler(newResults, gender);
+        const AscendingArray = AscendingSort(newResults, factor);
+        const DescendingArray = DescendingSort(newResults, factor);
+        if(gender){ 
+            setCharacterList(filteredArray)
+        }else if(clicked === true && factor){
+            setCharacterList(AscendingArray)
+        }else if(clicked === false && factor){
+            setCharacterList(DescendingArray)
+        }
         else{
-        setCharacterList(newResults);}
+            setCharacterList(newResults)
+        }
     }
 
 
     getCharacter();
-}, [movieData, gender])
+}, [movieData, gender, clicked, setClicked, factor])
     
-
-    // const characterSetter = ()=>{
-    //     if(clicked === false){setClicked(true)}
-    //     else{ setClicked(false)}
-    // }
-    // const handleClick = async ()=>{
-    //    await characterSetter()
-    // }
-
-    // useEffect(()=>{
-    //     setCharacterList(AscendingSort(characterList, "name"))
-    // },[setClicked, setCharacterList])
 
     let totalHeight = 0;
     for(let i=0; i < characterList?.length; i++){
@@ -69,7 +65,14 @@ useEffect(() => {
     const handleChange =(e)=>{
         setGender(e.target.value)
     }
-    
+
+    const handleClick = ()=>{
+        if(clicked === false){
+            setClicked(true)
+        }else{ setClicked(false)}
+    }
+
+    // console.log(clicked, factor)
     return(
         <div className="lg:mt-6 mt-3">
             <Marquee className="lg:text-3xl md:text-2xl text-xl font-bold text-yellow-200 lg:p-8 p-4" pauseOnHover={true} gradient={false}>
@@ -78,12 +81,12 @@ useEffect(() => {
             <table className="w-full">
 						<thead>
 						<tr className="text-left border-2 border-yellow-200">
-							<th className="text-yellow-200 lg:text-xl md:text-md text-xs" scope="col" >Name</th>
-							<th className="text-yellow-200 lg:text-xl md:text-md text-xs" scope="col">Gender &#8597;</th>
-							<th className="text-yellow-200 lg:text-xl md:text-md text-xs" scope="col">Height(cm)</th>
+							<th className="text-yellow-200 lg:text-xl md:text-md text-xs" scope="col" onClick={()=>{setFactor('name');handleClick();}}>Name</th>
+							<th className="text-yellow-200 lg:text-xl md:text-md text-xs" scope="col" onClick={()=>{setFactor('gender');handleClick();}}>Gender</th>
+							<th className="text-yellow-200 lg:text-xl md:text-md text-xs" scope="col" onClick={()=>{setFactor('height');handleClick();}}>Height(cm)</th>
 						</tr>
                         <tr className="text-yellow-200 text-left md:text-xl text-xs"><th className="w-full">
-                            Filter by Gender:</th><th/>
+                            Filter by Gender:</th>
                             <th><select value={gender} onChange={handleChange} className="bg-yellow-200 text-black">
                                 <option value="">select</option>
                                 <option value="male">Male</option>

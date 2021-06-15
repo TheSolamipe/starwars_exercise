@@ -11,7 +11,6 @@ function App() {
       const result = await axios(
         `${process.env.REACT_APP_BASE_URL}/films/`
       );
-      console.log(result?.data?.results)
       setMovies(result?.data?.results);
     }
     getMovies();
