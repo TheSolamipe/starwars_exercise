@@ -11,6 +11,7 @@ const MovieItem = (movie)=>{
 
     const [characterList, setCharacterList] = useState([]);
     const [clicked, setClicked] = useState(false);
+    const [gender, setGender] = useState('');
 
 
 useEffect(() => {
@@ -27,12 +28,16 @@ useEffect(() => {
        
         const newResults = results.map(({data}) => data);
         console.log(newResults);
-        setCharacterList(newResults);
+        // const filteredArray =[]
+        const filteredArray = FilterHandler(newResults, gender)
+        if(gender){ setCharacterList(filteredArray)}
+        else{
+        setCharacterList(newResults);}
     }
 
 
     getCharacter();
-}, [movieData])
+}, [movieData, gender])
     
 
     // const characterSetter = ()=>{
@@ -60,6 +65,10 @@ useEffect(() => {
     let totalinFeet = totalHeight * 0.0328084
     const feetValue = Math.trunc(totalinFeet)
     const inchesValue = ((totalinFeet - feetValue) * 12).toFixed(2)
+
+    const handleChange =(e)=>{
+        setGender(e.target.value)
+    }
     
     return(
         <div className="lg:mt-6 mt-3">
@@ -73,6 +82,16 @@ useEffect(() => {
 							<th className="text-yellow-200 lg:text-xl md:text-md text-xs" scope="col">Gender &#8597;</th>
 							<th className="text-yellow-200 lg:text-xl md:text-md text-xs" scope="col">Height(cm)</th>
 						</tr>
+                        <tr className="text-yellow-200 text-left md:text-xl text-xs"><th className="w-full">
+                            Filter by Gender:</th><th/>
+                            <th><select value={gender} onChange={handleChange} className="bg-yellow-200 text-black">
+                                <option value="">select</option>
+                                <option value="male">Male</option>
+                                <option value="female">Female</option>
+                                <option value="n/a">N/A</option>
+                                <option value="hermaphrodite">Hermophrodite</option>
+                            </select>
+                        </th></tr>
 						</thead>
 						<tbody>
 						{ characterList?.length && (
